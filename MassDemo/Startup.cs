@@ -1,4 +1,7 @@
+using MassDemo.Common;
+using MassDemo.Models;
 using MassDemo.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -20,12 +23,22 @@ namespace MassDemo
         }
 
         public IConfiguration Configuration { get; }
-
+        private void ConfigureBus(IBusRegistrationContext context, IInMemoryBusFactoryConfigurator configurator)
+        {
+            configurator.ConfigureEndpoints(context);
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddMassTransit(cfg =>
+            {
+                cfg.AddConsumer<NotificationConsumer>();
+    
+                cfg.UsingInMemory(ConfigureBus);
+                cfg.AddRequestClient<NotifyModel>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

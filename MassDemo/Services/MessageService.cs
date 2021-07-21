@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MassDemo.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace MassDemo.Services
 {
     public interface IMessageService
     {
-        Task SendAsync(string message);
+        Task SendAsync(NotifyModel notify);
     }
 
     public class MessageService : IMessageService
@@ -20,11 +21,11 @@ namespace MassDemo.Services
             _logger = logger;
         }
 
-        public async Task SendAsync(string message)
+        public async Task SendAsync(NotifyModel notify)
         {
             await Task.Delay(1000);
-            throw new InvalidOperationException("Not working!");
-            _logger.LogInformation(message + " -> [sent]");
+            //throw new InvalidOperationException("Not working!");
+            _logger.LogInformation(notify.Message + " -> [sent]");
         }
     }
 }
