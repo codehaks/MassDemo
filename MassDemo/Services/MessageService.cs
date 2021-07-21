@@ -23,6 +23,7 @@ namespace MassDemo.Services
         public async Task SendAsync(string message)
         {
             await Task.Delay(1000);
+            throw new InvalidOperationException("Not working!");
             _logger.LogInformation(message + " -> [sent]");
         }
     }
