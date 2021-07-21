@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MassDemo.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,14 +13,20 @@ namespace MassDemo.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        [BindProperty]
+        public string Message { get; set; }
+        private readonly IMessageService _messageService;
+
+        public IndexModel(ILogger<IndexModel> logger, IMessageService messageService)
         {
             _logger = logger;
+            _messageService = messageService;
         }
 
-        public void OnGet()
+        public IActionResult OnPost()
         {
-
+            _messageService.SendAsync(Message);
+            return RedirectToPage("Final");
         }
     }
 }
