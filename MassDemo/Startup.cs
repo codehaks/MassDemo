@@ -1,4 +1,5 @@
 using MassDemo.Services;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MassDemo
@@ -26,6 +28,7 @@ namespace MassDemo
         {
             services.AddRazorPages();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

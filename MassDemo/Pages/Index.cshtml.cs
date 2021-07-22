@@ -1,4 +1,5 @@
 ﻿using MassDemo.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static MassDemo.Common.MessageBus;
 
 namespace MassDemo.Pages
 {
@@ -15,17 +17,16 @@ namespace MassDemo.Pages
 
         [BindProperty]
         public string Message { get; set; }
-        private readonly IMessageService _messageService;
 
-        public IndexModel(ILogger<IndexModel> logger, IMessageService messageService)
+
+        public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
-            _messageService = messageService;
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost([FromServices]IMediator mediator)
         {
-            _messageService.SendAsync(Message);
+            mediator.Publish(new NotifyModel { UserId = "codehaks", Message = "Welcome to channel!" });
             return RedirectToPage("Final");
         }
     }
