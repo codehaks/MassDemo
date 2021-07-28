@@ -23,9 +23,18 @@ namespace MassDemo.Pages
             _messageService = messageService;
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            _messageService.SendAsync(Message);
+            try
+            {
+                await _messageService.SendSMSAsync(Message); // Fire&Forget
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
             return RedirectToPage("Final");
         }
     }

@@ -8,7 +8,9 @@ namespace MassDemo.Services
 {
     public interface IMessageService
     {
-        Task SendAsync(string message);
+        Task SendSMSAsync(string message);
+        Task SendEmailAsync(string message);
+        Task SendNotificationAsync(string message);
     }
 
     public class MessageService : IMessageService
@@ -20,12 +22,22 @@ namespace MassDemo.Services
             _logger = logger;
         }
 
-        public async Task SendAsync(string message)
+        public async Task SendSMSAsync(string message)
         {
-            // Send SMS
-            await Task.Delay(1000);
- 
-            _logger.LogInformation(message + " -> [sent]");
+            await Task.Delay(5000);
+            _logger.LogInformation(message + " -> [SMS Sent]");
+        }
+
+        public async Task SendEmailAsync(string message)
+        {
+            await Task.Delay(5000);
+            _logger.LogInformation(message + " -> [Email Sent]");
+        }
+
+        public async Task SendNotificationAsync(string message)
+        {
+            await Task.Delay(5000);
+            _logger.LogInformation(message + " -> [Notification Sent]");
         }
     }
 }
