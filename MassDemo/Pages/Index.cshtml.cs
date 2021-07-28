@@ -25,16 +25,10 @@ namespace MassDemo.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            try
-            {
-                await _messageService.SendSMSAsync(Message); // Fire&Forget
+            await _messageService.SendSMSAsync(Message);
+            await _messageService.SendEmailAsync(Message);
+            await _messageService.SendNotificationAsync(Message);
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
             return RedirectToPage("Final");
         }
     }
